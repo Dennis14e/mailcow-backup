@@ -7,7 +7,7 @@ CUR_DIR=${CUR_DIR%/}
 MAILCOW_DIR="/home/mailcow-dockerized"
 MAILCOW_DIR=${MAILCOW_DIR%/}
 
-BACKUP_DIR="$CUR_DIR/mysql"
+BACKUP_DIR="${CUR_DIR}/mysql"
 BACKUP_DIR=${BACKUP_DIR%/}
 
 BACKUP_AGE_MAX=7

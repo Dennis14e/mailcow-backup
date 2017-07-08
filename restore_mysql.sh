@@ -7,7 +7,7 @@ CUR_DIR=${CUR_DIR%/}
 MAILCOW_DIR="/home/mailcow-dockerized"
 MAILCOW_DIR=${MAILCOW_DIR%/}
 
-BACKUP_DIR="${CUR_DIR}/vmail"
+BACKUP_DIR="${CUR_DIR}/mysql"
 BACKUP_DIR=${BACKUP_DIR%/}
 
 
@@ -33,15 +33,40 @@ do
 done
 
 
+# check mailcow.conf
+MAILCOW_CFG="${MAILCOW_DIR}/mailcow.conf"
+
+echo "Check, if \"${MAILCOW_CFG}\" exists..."
+if [ ! -f "${MAILCOW_CFG}" ]
+then
+  >&2 echo "mailcow.conf not found."
+  exit 1
+fi
+
+
+# source variables
+echo "Import mailcow variables..."
+source "${MAILCOW_CFG}"
+
+
+# check variables
+echo "Check mailcow variables..."
+if [ -z ${DBUSER+x} ] || [ -z ${DBPASS+x} ] || [ -z ${DBNAME+x} ]
+then
+  >&2 echo "variables unset"
+  exit 1
+fi
+
+
 # choose file
 PS3="Type a number: "
 BACKUP_FILEPATH=""
-FILE_LIST=$(find "${BACKUP_DIR}/" -maxdepth 1 -type f -name "*.tar.gz")
+FILE_LIST=$(find "${BACKUP_DIR}/" -maxdepth 1 -type f -name "*.sql")
 
 select FILE_SELECT in $FILE_LIST "Quit"
 do
   case $FILE_SELECT in
-    *.tar.gz)
+    *.sql)
       BACKUP_FILEPATH="${FILE_SELECT}"
       echo "You selected file \"${FILE_SELECT}\""
       break
@@ -68,7 +93,7 @@ fi
 
 
 # docker instance id
-DOCKER_INSTANCE_ID=$(cd "${MAILCOW_DIR}" && docker-compose ps -q dovecot-mailcow)
+DOCKER_INSTANCE_ID=$(cd "${MAILCOW_DIR}" && docker-compose ps -q mysql-mailcow)
 
 if [ $? -ne 0 ] || [ -z "${DOCKER_INSTANCE_ID}" ]
 then
@@ -77,18 +102,8 @@ then
 fi
 
 
-# docker volume name
-DOCKER_VOLUME_NAME=$(docker inspect --format '{{ range .Mounts }}{{ if eq .Destination "/var/vmail" }}{{ .Name }}{{ end }}{{ end }}' "${DOCKER_INSTANCE_ID}")
-
-if [ $? -ne 0 ] || [ -z "${DOCKER_VOLUME_NAME}" ]
-then
-  >&2 echo "Can not get docker volume name"
-  exit 1
-fi
-
-
 # docker restore
-docker run --rm -it -v "${DOCKER_VOLUME_NAME}:/vmail" -v "${BACKUP_DIR}:/backup" debian:jessie tar xvfz "/backup/${BACKUP_FILENAME}"
+docker exec -i "${DOCKER_INSTANCE_ID}" mysql "-u${DBUSER}" "-p${DBPASS}" "${DBNAME}" < "${BACKUP_FILEPATH}"
 
 if [ $? -ne 0 ]
 then
