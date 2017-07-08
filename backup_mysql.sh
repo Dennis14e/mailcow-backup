@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# SETTINGS
+## SETTINGS
 CUR_DIR=$(dirname "$(readlink -f "$0")")
 CUR_DIR=${CUR_DIR%/}
 
@@ -13,7 +13,7 @@ BACKUP_DIR=${BACKUP_DIR%/}
 BACKUP_AGE_MAX=7
 
 
-# DO NOT CHANGE
+## DO NOT CHANGE
 MAILCOW_CFG="${MAILCOW_DIR}/mailcow.conf"
 
 

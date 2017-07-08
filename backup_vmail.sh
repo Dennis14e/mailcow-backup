@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# SETTINGS
+## SETTINGS
 CUR_DIR=$(dirname "$(readlink -f "$0")")
 CUR_DIR=${CUR_DIR%/}
 
@@ -13,7 +13,7 @@ BACKUP_DIR=${BACKUP_DIR%/}
 BACKUP_AGE_MAX=7
 
 
-# DO NOT CHANGE
+## DO NOT CHANGE
 MAILCOW_CFG="${MAILCOW_DIR}/mailcow.conf"
 
 
@@ -58,9 +58,6 @@ then
   exit 1
 fi
 
-
-echo "${DOCKER_INSTANCE_ID}"
-exit 0
 
 # docker volume name
 DOCKER_VOLUME_NAME=$(docker inspect --format '{{ range .Mounts }}{{ if eq .Destination "/var/vmail" }}{{ .Name }}{{ end }}{{ end }}' "${DOCKER_INSTANCE_ID}")
