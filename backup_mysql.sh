@@ -40,7 +40,7 @@ then
 fi
 
 
-# Date w/ timezone
+# date + filename
 BACKUP_DATE=$(date +"%Y%m%d_%H%M%S")
 BACKUP_FILENAME="${BACKUP_DATE}_mailcow.sql"
 BACKUP_FILEPATH="${BACKUP_DIR}/${BACKUP_FILENAME}"
@@ -64,11 +64,11 @@ find "${BACKUP_DIR}" -mindepth 1 -type f -mtime "+${BACKUP_AGE_MAX}" -print -del
 
 
 # docker backup
-cd "${MAILCOW_DIR}" && docker-compose exec mysql-mailcow mysqldump -u "${DBUSER}" -p"${DBPASS}" "${DBNAME}" > "${BACKUP_FILEPATH}"
+cd "${MAILCOW_DIR}" && docker-compose exec mysql-mailcow mysqldump -u "${DBUSER}" "-p${DBPASS}" "${DBNAME}" > "${BACKUP_FILEPATH}"
 
 if [ $? -ne 0 ]
 then
-  >&2 echo "An error occured"
+  >&2 echo "An error occurred"
   exit 1
 fi
 

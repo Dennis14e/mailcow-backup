@@ -26,21 +26,7 @@ then
 fi
 
 
-# source variables
-#echo "Import mailcow variables..."
-#source "${MAILCOW_CFG}"
-
-
-# check variables
-#echo "Check mailcow variables..."
-#if [ -z ${DBUSER+x} ] || [ -z ${DBPASS+x} ] || [ -z ${DBNAME+x} ]
-#then
-#  >&2 echo "variables unset"
-#  exit 1
-#fi
-
-
-# Date w/ timezone
+# date + filename
 BACKUP_DATE=$(date +"%Y%m%d_%H%M%S")
 BACKUP_FILENAME="${BACKUP_DATE}_mailcow.tar.gz"
 BACKUP_FILEPATH="${BACKUP_DIR}/${BACKUP_FILENAME}"
@@ -73,6 +59,9 @@ then
 fi
 
 
+echo "${DOCKER_INSTANCE_ID}"
+exit 0
+
 # docker volume name
 DOCKER_VOLUME_NAME=$(docker inspect --format '{{ range .Mounts }}{{ if eq .Destination "/var/vmail" }}{{ .Name }}{{ end }}{{ end }}' "${DOCKER_INSTANCE_ID}")
 
@@ -84,11 +73,11 @@ fi
 
 
 # docker backup
-docker run --rm -i -v "${DOCKER_VOLUME_NAME}":/vmail -v "${BACKUP_DIR}":/backup debian:jessie tar cvfz "/backup/${BACKUP_FILENAME}" "/vmail"
+docker run --rm -i -v "${DOCKER_VOLUME_NAME}:/vmail" -v "${BACKUP_DIR}:/backup" debian:jessie tar cvfz "/backup/${BACKUP_FILENAME}" "/vmail"
 
 if [ $? -ne 0 ]
 then
-  >&2 echo "An error occured"
+  >&2 echo "An error occurred"
   exit 1
 fi
 
