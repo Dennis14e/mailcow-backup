@@ -51,7 +51,7 @@ fi
 # MAX_AGE a number?
 if ! [[ "${BACKUP_MAX_AGE}" =~ ^[0-9]+$ ]]
 then
-  >&2 echo "BACKUP_MYSQL_MAX_AGE is not a number."
+  >&2 echo "BACKUP_VMAIL_MAX_AGE is not a number."
   exit 1
 fi
 
