@@ -118,7 +118,7 @@ fi
 
 
 # docker backup
-cd "${MAILCOW_DIR}" && docker-compose exec mysql-mailcow mysqldump -u "${DBUSER}" "-p${DBPASS}" "${DBNAME}" > "${BACKUP_FILEPATH}"
+cd "${MAILCOW_DIR}" && docker-compose exec -T mysql-mailcow mysqldump --default-character-set=utf8mb4 "-u${DBUSER}" "-p${DBPASS}" "${DBNAME}" > "${BACKUP_FILEPATH}"
 
 if [ $? -eq 0 ]
 then
