@@ -56,21 +56,21 @@ fi
 
 
 # MAX_AGE a number?
-if ! [[ "${BACKUP_MAX_AGE}" =~ ^[0-9]+$ ]]
+if [[ ! "${BACKUP_MAX_AGE}" =~ ^[0-9]+$ ]]
 then
   >&2 echo "BACKUP_REDIS_MAX_AGE is not a number."
   exit 1
 fi
 
 # SLEEPTIME a number?
-if ! [[ "${BACKUP_SLEEPTIME}" =~ ^[0-9]+$ ]]
+if [[ ! "${BACKUP_SLEEPTIME}" =~ ^[0-9]+$ ]]
 then
   >&2 echo "BACKUP_REDIS_SLEEPTIME is not a number."
   exit 1
 fi
 
 # MAX_TRY a number?
-if ! [[ "${BACKUP_MAX_TRY}" =~ ^[0-9]+$ ]]
+if [[ ! "${BACKUP_MAX_TRY}" =~ ^[0-9]+$ ]]
 then
   >&2 echo "BACKUP_REDIS_MAX_TRY is not a number."
   exit 1
