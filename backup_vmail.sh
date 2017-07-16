@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# requirements
+if [ -z $(which docker-compose) ]; then >&2 echo "Could not find docker-compose."; exit 1; fi
+if [ -z $(which docker) ]; then >&2 echo "Could not find docker."; exit 1; fi
+
+
 # directory of this script
 CUR_DIR=$(dirname "$(readlink -f "$0")")
 CUR_DIR=${CUR_DIR%/}
