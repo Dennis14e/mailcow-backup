@@ -126,7 +126,7 @@ fi
 
 
 # docker backup
-docker run --rm -i -v "${DOCKER_VOLUME_NAME}:/vmail" -v "${BACKUP_DIR}:/backup" debian:jessie tar cvfz "/backup/${BACKUP_FILENAME}" "/vmail"
+docker run --rm -i -v "${DOCKER_VOLUME_NAME}:/vmail" -v "${BACKUP_DIR}:/backup" debian:stretch-slim tar cvfz "/backup/${BACKUP_FILENAME}" "/vmail"
 
 if [ $? -eq 0 ]
 then

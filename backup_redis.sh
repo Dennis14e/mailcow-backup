@@ -171,7 +171,7 @@ done
 
 
 # docker backup
-docker run --rm -i -v "${DOCKER_VOLUME_NAME}:/data" -v "${BACKUP_DIR}:/backup" debian:jessie cp "/data/dump.rdb" "/backup/${BACKUP_FILENAME}"
+docker run --rm -i -v "${DOCKER_VOLUME_NAME}:/data" -v "${BACKUP_DIR}:/backup" debian:stretch-slim cp "/data/dump.rdb" "/backup/${BACKUP_FILENAME}"
 
 if [ $? -eq 0 ]
 then

@@ -130,7 +130,7 @@ fi
 
 
 # docker restore
-docker run --rm -it -v "${DOCKER_VOLUME_NAME}:/vmail" -v "${BACKUP_DIR}:/backup" debian:jessie tar xvfz "/backup/${BACKUP_FILENAME}"
+docker run --rm -it -v "${DOCKER_VOLUME_NAME}:/vmail" -v "${BACKUP_DIR}:/backup" debian:stretch-slim tar xvfz "/backup/${BACKUP_FILENAME}"
 
 if [ $? -eq 0 ]
 then
