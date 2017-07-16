@@ -7,20 +7,16 @@ echo "# No liability is assumed for damage of any kind! #"
 echo "###################################################"
 echo
 
-while true
-do
-  read -p "Continue (y/n)? " choice
-  case "${choice}" in
-    y|Y)
-      break;
-      ;;
-    n|N)
-      exit 0
-      ;;
-    *)
-      ;;
-  esac
-done
+read -r -p "Continue? [y/N] " response
+if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
+then
+  exit 0
+fi
+
+
+# requirements
+if [ -z $(which docker-compose) ]; then >&2 echo "Could not find docker-compose."; exit 1; fi
+if [ -z $(which docker) ]; then >&2 echo "Could not find docker."; exit 1; fi
 
 
 # directory of this script
